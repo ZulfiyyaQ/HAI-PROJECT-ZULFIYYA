@@ -59,21 +59,12 @@ def setup_logging() -> Path:
 # ---------------------------------------------------------------------------
 
 def get_connection_string() -> str:
-    # 1. Check if it's already injected into the OS Environment (like GitHub Actions does)
+    # Read the PostgreSQL connection string from the .env file.
+    load_dotenv()
     conn_str = os.getenv("SUPABASE_CONNECTION_STRING")
-    
-    # 2. Fall back to local .env file check if not found in OS Environment (Local VS Code)
     if not conn_str:
-        load_dotenv()
-        conn_str = os.getenv("SUPABASE_CONNECTION_STRING")
-        
-    # 3. If still missing, explicitly report the missing variable
-    if not conn_str:
-        raise EnvironmentError(
-            "SUPABASE_CONNECTION_STRING not found in system environments or local .env file."
-        )
+        raise EnvironmentError("SUPABASE_CONNECTION_STRING must be set in .env")
     return conn_str
-
 
 def load_valid_sources(conn_str: str) -> list[dict]:
     # Fetch every source that is marked as valid so we know what to scrape.
