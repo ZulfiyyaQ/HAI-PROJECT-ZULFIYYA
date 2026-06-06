@@ -17,3 +17,6 @@ html/
 results/
 *.jsonl
 output/
+.vscode/ 
+.vscode/mcp.json
+

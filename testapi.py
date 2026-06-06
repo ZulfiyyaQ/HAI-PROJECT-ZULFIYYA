@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from openai import OpenAI
+from openai import AzureOpenAI
 
 
 # Load environment variables from the local .env file.
@@ -30,10 +30,16 @@ if missing_keys:
     raise SystemExit(1)
 
 
-# Create the OpenAI client using Azure endpoint and API key from .env.
-client = OpenAI(
-    base_url=endpoint,
+# Create the AzureOpenAI client using Azure Foundry endpoint.
+# Strip the /api/projects/{project} path if it exists - only need the base URL
+base_endpoint = endpoint
+if "/api/projects/" in base_endpoint:
+    base_endpoint = base_endpoint.split("/api/projects/")[0]
+
+client = AzureOpenAI(
     api_key=api_key,
+    api_version="2024-02-15-preview",
+    azure_endpoint=base_endpoint,
 )
 
 
@@ -43,7 +49,7 @@ response = client.chat.completions.create(
     messages=[
         {
             "role": "user",
-            "content": "How many R's are there in te word raspberry?",
+            "content": "How many R's are there in the word raspberry?",
         }
     ],
 )

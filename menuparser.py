@@ -9,12 +9,12 @@ import time
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from loguru import logger
-from openai import OpenAI
+from openai import AzureOpenAI
 from openpyxl import load_workbook
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent
-SEED_FILE = PROJECT_ROOT / "seeds" / "campus_restaurant_websites.xlsx"
+SEED_FILE = PROJECT_ROOT / "seeds" / "campus_restaurant_menus.xlsx"
 HTML_DIR = PROJECT_ROOT / "html"
 LOG_DIR = PROJECT_ROOT / "logs"
 RESULTS_DIR = PROJECT_ROOT / "results"
@@ -314,8 +314,19 @@ def append_jsonl(file_path: Path, item: dict) -> None:
 def run_parser() -> Path:
     # Execute the full parsing pipeline from scraped HTML files to JSONL output.
     endpoint, deployment, api_key = load_azure_settings()
-    # Configure timeout directly on the client so each API call cannot hang forever.
-    client = OpenAI(base_url=endpoint, api_key=api_key, timeout=MODEL_TIMEOUT_SECONDS)
+    
+    # Strip the /api/projects/{project} path if it exists - only need the base URL
+    if "/api/projects/" in endpoint:
+        base_endpoint = endpoint.split("/api/projects/")[0]
+    else:
+        base_endpoint = endpoint
+    
+    # Create AzureOpenAI client with proper configuration
+    client = AzureOpenAI(
+        api_key=api_key,
+        api_version="2024-02-15-preview",
+        azure_endpoint=base_endpoint,
+    )
     metadata_by_url = load_metadata_by_url()
     html_files = sorted(HTML_DIR.glob("*.html"))
 

@@ -474,16 +474,24 @@ def build_messages(snapshot: dict[str, Any], html_text: str, chunk_index: int, c
 
 
 def azure_chat_completion(messages: list[dict[str, str]], max_retries: int = 3) -> dict[str, Any]:
-    endpoint = os.environ["AZURE_OPENAI_ENDPOINT"].rstrip("/")
-    deployment = os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
-    api_key = os.environ["AZURE_OPENAI_API_KEY"]
-    api_version = os.environ.get("AZURE_OPENAI_API_VERSION", "2024-12-01-preview")
-    if endpoint.endswith("/openai/v1"):
-        url = f"{endpoint}/chat/completions"
+    # Load Azure Foundry credentials from environment
+    endpoint = os.environ["AZURE_FOUNDRY_ENDPOINT"].rstrip("/")
+    deployment = os.environ["AZURE_FOUNDRY_MODEL"]
+    api_key = os.environ["AZURE_FOUNDRY_API_KEY"]
+    api_version = os.environ.get("AZURE_OPENAI_API_VERSION", "2024-02-15-preview")
+    
+    # Strip the /api/projects/{project} path if it exists - only need the base URL
+    if "/api/projects/" in endpoint:
+        base_endpoint = endpoint.split("/api/projects/")[0]
+    else:
+        base_endpoint = endpoint
+    
+    if base_endpoint.endswith("/openai/v1"):
+        url = f"{base_endpoint}/chat/completions"
         model_field = {"model": deployment}
     else:
         url = (
-            f"{endpoint}/openai/deployments/{urllib.parse.quote(deployment)}/chat/completions"
+            f"{base_endpoint}/openai/deployments/{urllib.parse.quote(deployment)}/chat/completions"
             f"?api-version={urllib.parse.quote(api_version)}"
         )
         model_field = {}
@@ -764,7 +772,7 @@ def upsert_menu_items(rows: list[dict[str, Any]], parser_run_id: str) -> int:
     if psycopg is None:
         raise RuntimeError("psycopg is required when using --save-to-db. Run: env UV_CACHE_DIR=.uv-cache uv sync")
 
-    parser_model = os.environ.get("AZURE_OPENAI_DEPLOYMENT_NAME", "")
+    parser_model = os.environ.get("AZURE_FOUNDRY_MODEL", "")
     valid_rows = [row for row in rows if row["is_valid_menu"]]
     if not valid_rows:
         return 0
