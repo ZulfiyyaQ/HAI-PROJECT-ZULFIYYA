@@ -1,0 +1,143 @@
+/* Animated Pop-in Bubble Effect */
+@keyframes bubblePop {
+    0% {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.03);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.message-appear {
+    animation: bubblePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    transform-origin: left top;
+}
+
+.user-message-appear {
+    animation: bubblePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    transform-origin: right top;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.2s ease-out forwards;
+}
+/* Styling Markdown Elements inside the Chat Bubbles */
+.markdown-content h2 {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #9f1239; /* Deep rose-800 color */
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.markdown-content h3 {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #be123c; /* Rose-700 color */
+    margin-bottom: 0.25rem;
+    padding-left: 0.25rem;
+}
+
+.markdown-content ul {
+    margin-left: 1.25rem;
+    margin-bottom: 0.75rem;
+    list-style-type: disc;
+}
+
+.markdown-content li {
+    margin-bottom: 0.125rem;
+}
+
+.markdown-content hr {
+    border: 0;
+    border-top: 1px dashed #fecdd3; /* Light rose border line */
+    margin: 0.75rem 0;
+}
+/* Ensure clean nested list indentation inside the chat box */
+.markdown-content ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.markdown-content ul ul {
+    list-style-type: circle;
+    margin-left: 1.5rem;
+}
+
+.markdown-content ul ul ul {
+    list-style-type: square;
+    margin-left: 1.5rem;
+}
+
+.markdown-content li {
+    margin-top: 0.25rem;
+    color: #4c0519; /* Soft readable deep dark rose text */
+}
+/* 1. Full-Bleed Wallpaper (For the browser background) */
+.bg-wallpaper {
+    background-image: url('./images/browser-wallpaper.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. Simple Pink Chat App Window */
+.max-w-4xl {
+    background-color: rgba(255, 241, 242, 0.9); /* Solid soft pink with 90% opacity */
+    backdrop-filter: blur(4px); /* Smoothly softens the wallpaper shapes behind the chat box */
+    border: 1px solid #fecdd3; /* Rose-200 border outline */
+}
+
+/* 3. The inner Chat Stream Background */
+#chatContainer {
+    background-color: rgba(255, 255, 255, 0.6); /* Clear white overlay so text stays perfectly readable */
+}
+
+/* --- Keep your existing list & animation styles below --- */
+.markdown-content ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.markdown-content ul ul {
+    list-style-type: circle;
+    margin-left: 1.5rem;
+}
+
+.markdown-content li {
+    margin-top: 0.25rem;
+    color: #4c0519;
+}
+
+@keyframes bubblePop {
+    0% { transform: scale(0.6); opacity: 0; }
+    70% { transform: scale(1.03); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.message-appear {
+    animation: bubblePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    transform-origin: left top;
+}
+
+.user-message-appear {
+    animation: bubblePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    transform-origin: right top;
+}
