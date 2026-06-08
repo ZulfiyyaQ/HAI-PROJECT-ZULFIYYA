@@ -116,4 +116,4 @@ async def chat_endpoint(request: ChatRequest):
         return {"reply": "I don't know exactly what it is, but I can help you with finding a university or suitable menu for you!"}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8001)  # <-- Change this to 8001
+    uvicorn.run(app, host="127.0.0.1", port=8002)  # <-- Change this to 8001

@@ -63,7 +63,7 @@ chatForm.addEventListener('submit', async (e) => {
     try {
         // Here we hit your local Python API wrapper backend (e.g. FastAPI/Flask running on port 8000)
         // Which handles the Supabase queries and cached exchange computations under the hood
-        const response = await fetch('http://127.0.0.1:8001/chat', {
+        const response = await fetch('http://127.0.0.1:8002/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message: text })
